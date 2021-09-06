@@ -4,11 +4,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Orders from "./Orders"
 import { Link } from "react-router-dom"
+import axios from 'axios'
 import "./Order.css"
 
 
 
 function Order() {
+  
     return (
         <div  style={{paddingBottom:"30px"}}>
           <div>
@@ -22,7 +24,7 @@ function Order() {
         <div className="hrTag">
           <hr className="fade-2"/>
         </div>
-          <Orders/>  
+          <Orders />  
         </div>
     )
 }

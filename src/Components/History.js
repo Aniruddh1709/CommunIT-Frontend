@@ -2,9 +2,22 @@ import React from "react"
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Table from 'react-bootstrap/Table'
+import axios from 'axios'
 import { Link } from "react-router-dom"
 
 function History() {
+  const random=[{"Date_Time":"27:27:27","Phone_Number":"9999","Flat_No":"999","Order":"milk,milk","Comment":"Comment"},{"Date_Time":"27:27:27","Phone_Number":"9999","Flat_No":"999","Order":"milk,milk","Comment":"Comment"},{"Date_Time":"27:27:27","Phone_Number":"9999","Flat_No":"999","Order":"milk,milk","Comment":"Comment"}]
+  const [data,setData]=React.useState(random);
+  React.useEffect(()=>{
+    console.log(sessionStorage.getItem("user"))
+    console.log(sessionStorage.getItem("password"))
+axios.post(`http://127.0.0.1:5000/history`, { user:sessionStorage.getItem("user"),password: sessionStorage.getItem("password")})
+.then(res => {
+  console.log(res);
+  console.log(res.data);
+})
+  })
     return (
         <div  style={{paddingBottom:"30px"}}>
         <div>
@@ -18,6 +31,41 @@ function History() {
       <div className="hrTag">
         <hr className="fade-2"/>
       </div>
+      <Container>
+      <Table responsive>
+  <thead>
+    <tr>
+      <th>Serial No.</th>
+     
+        <th >Mobile Number</th>
+        <th >Room Number</th>
+        <th>Order Message</th>
+        <th>Comments</th>
+        <th>Date and Time</th>
+        
+     
+    </tr>
+  </thead>
+  <tbody>
+  
+      {data.map((data,key)=>(
+                <>            
+                    <tr>
+                        <td>{key+1}</td>
+                        <td> {data.Phone_Number}</td>
+                        <td> {data.Flat_No}</td>
+                        <td> {data.Order}</td>
+                        <td> {data.Comment}</td>
+                        <td> {data.Date_Time}</td>
+                        </tr>
+                </>
+      ))}
+    
+     
+    
+  </tbody>
+</Table>
+      </Container>
       
       </div>
     )
