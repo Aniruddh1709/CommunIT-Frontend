@@ -10,12 +10,13 @@ function History() {
   const random=[{"Date_Time":"27:27:27","Phone_Number":"9999","Flat_No":"999","Order":"milk,milk","Comment":"Comment"},{"Date_Time":"27:27:27","Phone_Number":"9999","Flat_No":"999","Order":"milk,milk","Comment":"Comment"},{"Date_Time":"27:27:27","Phone_Number":"9999","Flat_No":"999","Order":"milk,milk","Comment":"Comment"}]
   const [data,setData]=React.useState(random);
   React.useEffect(()=>{
-    console.log(sessionStorage.getItem("user"))
-    console.log(sessionStorage.getItem("password"))
-axios.post(`http://127.0.0.1:5000/history`, { user:sessionStorage.getItem("user"),password: sessionStorage.getItem("password")})
+ 
+    
+axios.get(`http://127.0.0.1:5000/history`, {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}})
 .then(res => {
   console.log(res);
   console.log(res.data);
+  setData(res.data)
 })
   })
     return (
@@ -48,14 +49,14 @@ axios.post(`http://127.0.0.1:5000/history`, { user:sessionStorage.getItem("user"
   </thead>
   <tbody>
   
-      {data.map((data,key)=>(
+      {data && data.reverse().map((data,key)=>(
                 <>            
                     <tr>
                         <td>{key+1}</td>
                         <td> {data.Phone_Number}</td>
-                        <td> {data.Flat_No}</td>
-                        <td> {data.Order}</td>
-                        <td> {data.Comment}</td>
+                        <td> {data.House_Number}</td>
+                        <td> {data.List_Of_Items}</td>
+                        <td> {data.Status}</td>
                         <td> {data.Date_Time}</td>
                         </tr>
                 </>

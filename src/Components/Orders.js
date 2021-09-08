@@ -21,27 +21,30 @@ food:["Idli","dosa"]
 }
 
       ]
-    const data=[];
+   
     const [OrderData,setOrderData]=React.useState(Sample);
     React.useEffect(()=>{
+       
         (async function() {
             try {
-              const response = await axios.get(`http://127.0.0.1:5000/orders`,{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")});
-              setOrderData(OrderData=>([...response.data]))
-              console.log(OrderData) 
+              axios.get(`http://127.0.0.1:5000/orders`, 
+              {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}}).then(response=>  setOrderData(OrderData=>([...response.data])))
+               .catch((err) => {
+                  alert(err);
+               });
+            
             } catch (e) {
               console.error(e);
             }
           })();
-              console.log(sessionStorage.getItem("user"))
-              console.log(sessionStorage.getItem("password"))
+          
                },[])
-    console.log(OrderData) 
-    const setOrders = (r) => {
-        var ord = OrderData.filter(s=> s.flat!==r)
-        console.log(ord);
+   
+    const setOrders = (r,f) => {
+        console.log(f.Check_List)
+        var ord = f.filter(s=> s.House_Number!==r)
         setOrderData(ord)
-    }
+            }
     
     return(
         
@@ -51,7 +54,7 @@ food:["Idli","dosa"]
              OrderData.map((d,key)=>(
                 
                  <>
-                 <IndividualOrders setOrders={setOrders}flat={d.Flat_No} Orders={d && d.List_Of_Items} />
+                 <IndividualOrders key={key} OrderData={OrderData} setOrders={setOrders}flat={d.House_Number} Orders={d && d.List_Of_Items} state={d.Check_List} Phone_Number={d.Phone_Number}/>
                  </>
              ))}
 
@@ -60,44 +63,71 @@ food:["Idli","dosa"]
     )
 }
 
-const dummyData={flat:"Room",
 
-                food:["Idli","dosa","Tea Powder","Sugar","Idli","dosa","Tea Powder","Sugar","Idli","dosa","Tea Powder","Sugar"]
-}
 
-const IndividualOrders = ({flat,Orders,setOrders,Phone_Number}) =>{
-    // console.log(Orders.List_Of_Items)
-    const [state, setState] = React.useState(new Array(Orders && Orders.split(",")).fill(false));
+const IndividualOrders = ({key,flat,Orders,setOrders,Phone_Number,OrderData,state}) =>{
+   
     const [comment, setComment] = React.useState("");
-
+    console.log(Phone_Number)
     const handleToggle = (e) =>{
+   
             let lol=state;
+      
             lol[e.target.name]=e.target.checked;
-            setState(lol);
-            // console.log(state);
+       
+            OrderData.map((p,key)=>{
+                if(p.House_Number==flat){
+                    p.Check_List[key]=lol[key];
+                }
+            })
+            console.log(OrderData);
 }
+
 const handleComment =(e)=>{
     setComment(e.target.value);
    
 }
 const handleOnSubmit = (e) =>{
     console.log(flat)
-    e.preventDefault();
-    let Data=state.map((s,key)=>{
-        if(s){
-            return Orders.split(",")[key]
-          
-        }
-    })
+ 
+    let Data;
+    for(let i=0;i<OrderData.length;i++){
+        if(OrderData[i].House_Number==flat){
+            Data=OrderData[i].Check_List
+            break;
+           
+         }
+    }
+    
     var data ={
         flat:flat,
-        items:Data,
-        comment:comment,
+        List_Of_Items:Data,
+        Comment:comment,
         Phone_Number:Phone_Number
     }
-    setOrders(flat);
-    axios.post(`http://127.0.0.1:5000/orders`,{data:data})
+    const config = {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+    }
+    const getParams = (obj) => {
+        const params = new URLSearchParams();
+        const keys = Object.keys(obj);
+        for(let k of keys){
+            params.append(k, obj[k]);
+        }
+        return params;
+    }
+    console.log(Data.length)
+   
     console.log(data);
+ 
+    axios.post(`http://127.0.0.1:5000/orders`, 
+    getParams(data), config)
+     .catch((err) => {
+        alert(err);
+     });
+    
+    
+    
 }
     return (
         
@@ -111,7 +141,7 @@ const handleOnSubmit = (e) =>{
            <form onSubmit={handleOnSubmit}>
           
             <div style={{overflowY:"auto", height:"250px"}}>
-                {Orders && Orders.split(",").map((data,key)=>(
+                {Orders && Orders.map((data,key1)=>(
                     
                         <Row style={{width:"100%",paddingTop:"5px"}}>
                         <Col lg={8}  sm={8} xs={8}>
@@ -119,14 +149,13 @@ const handleOnSubmit = (e) =>{
                             <label for="name">{data}</label>
                         </Col>
                         <Col lg={2} sm={2} xs={2}>
-                            <input type="checkbox" id="name" onChange={handleToggle} value={state[key]} class="regular-checkbox" name={key} />
+                            <input type="checkbox" id="name" onChange={handleToggle} value={state[key1]} class="regular-checkbox" name={key1} />
                         </Col>
                    </Row>))
                     
                 }
 
            
-               {/* {Orders} */}
                </div>
                <div style={{ height:"50px",paddingTop:"10px" }}>
                <Row style={{}}>
