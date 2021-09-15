@@ -13,12 +13,10 @@ function Login() {
    
   }
   const handleUser =(e)=>{
-    // console.log(e.target.value)
     setUser(e.target.value)
    
 }
 const handlePassword =(e)=>{
-  // console.log(e.target.value)
   setPassword(e.target.value)
  
 }
