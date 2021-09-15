@@ -23,7 +23,7 @@ const handlePassword =(e)=>{
     return (
        
             <div id="loginform">
-              <FormHeader title="CommunIT" /> 
+              <FormHeader title="CommuniT" /> 
               <FormHeader2 title="Login" />
             <div>
           
