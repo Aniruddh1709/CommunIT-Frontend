@@ -76,7 +76,7 @@ const IndividualOrders = ({key,flat,Orders,setOrders,Phone_Number,OrderData,stat
             lol[e.target.name]=e.target.checked;
        
             OrderData.map((p,key)=>{
-                if(p.House_Number==flat){
+                if(p.House_Number===flat){
                     p.Check_List[key]=lol[key];
                 }
             })
@@ -92,7 +92,7 @@ const handleOnSubmit = (e) =>{
  
     let Data;
     for(let i=0;i<OrderData.length;i++){
-        if(OrderData[i].House_Number==flat){
+        if(OrderData[i].House_Number===flat){
             Data=OrderData[i].Check_List
             break;
            
