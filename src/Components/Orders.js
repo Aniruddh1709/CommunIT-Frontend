@@ -27,7 +27,7 @@ food:["Idli","dosa"]
        
         (async function() {
             try {
-              axios.get(`http://127.0.0.1:5000/orders`, 
+              axios.get(`http://com2-env.eba-vtpf3pnn.ap-south-1.elasticbeanstalk.com/orders`, 
               {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}}).then(response=>  setOrderData(OrderData=>([...response.data])))
                .catch((err) => {
                   alert(err);
