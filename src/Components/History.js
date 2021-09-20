@@ -12,7 +12,7 @@ function History() {
   React.useEffect(()=>{
  
     
-axios.get(`http://127.0.0.1:5000/history`, {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}})
+axios.get(`http://communitenv-env.eba-zwydzqva.ap-south-1.elasticbeanstalk.com/history`, {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}})
 .then(res => {
   console.log(res);
   console.log(res.data);
