@@ -12,7 +12,7 @@ function History() {
   React.useEffect(()=>{
  
     
-axios.get(`http://communit-env.eba-skfimbes.ap-south-1.elasticbeanstalk.com/history`, {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}})
+axios.get(`https://server.communit.in/histroy`, {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}})
 .then(res => {
   console.log(res);
   console.log(res.data);

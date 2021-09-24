@@ -27,7 +27,7 @@ food:["Idli","dosa"]
        
         (async function() {
             try {
-              axios.get(`http://communit-env.eba-skfimbes.ap-south-1.elasticbeanstalk.com/orders`, 
+              axios.get(`https://server.communit.in/orders`, 
               {params:{user:sessionStorage.getItem("user"),password:sessionStorage.getItem("password")}}).then(response=>  setOrderData(OrderData=>([...response.data])))
                .catch((err) => {
                   alert(err);
@@ -120,7 +120,7 @@ const handleOnSubmit = (e) =>{
    
     console.log(data);
  
-    axios.post(`http://communit-env.eba-skfimbes.ap-south-1.elasticbeanstalk.com/orders`, 
+    axios.post(`https://server.communit.in/orders`, 
     getParams(data), config)
      .catch((err) => {
         alert(err);
